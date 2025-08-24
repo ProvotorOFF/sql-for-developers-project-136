@@ -50,7 +50,7 @@ create table programs_modules(
 
 create table teaching_groups (
     id bigint generated always as identity primary key,
-    name varchar(20) check(type in ('student', 'teacher', 'admin')),
+    name varchar(20) check(name in ('student', 'teacher', 'admin')),
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
