@@ -47,3 +47,20 @@ create table programs_modules(
     program_id bigint references programs(id) not null,
     module_id bigint references modules(id) not null
 );
+
+create table teaching_groups (
+    id bigint generated always as identity primary key,
+    name varchar(20) check(type in ('student', 'teacher', 'admin')),
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
+
+create table users (
+    id bigint generated always as identity primary key,
+    name varchar(255) not null,
+    email varchar(255) unique not null,
+    password varchar(255) not null,
+    teaching_group_id bigint references teaching_groups(id) not null,
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
