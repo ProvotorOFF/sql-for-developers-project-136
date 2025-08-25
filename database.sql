@@ -64,3 +64,49 @@ create table users (
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
+
+create table enrollments (
+    id bigint generated always as identity primary key,
+    user_id bigint references users(id) not null,
+    program_id bigint references programs(id) not null,
+    status varchar(30) check(
+        status in ('active', 'pending', 'cancelled', 'completed')
+    ),
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
+
+create table payments (
+    id bigint generated always as identity primary key,
+    enrollment_id bigint references enrollments(id) not null,
+    sum decimal(10, 2) not null,
+    status varchar(30) check(
+        status in ('pending', 'paid', 'failed', 'refunded')
+    ),
+    payed_at timestamp default now() not null,
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
+
+create table program_completions (
+    id bigint generated always as identity primary key,
+    user_id bigint references users(id) not null,
+    program_id bigint references programs(id) not null,
+    status varchar(30) check(
+        status in ('active', 'completed', 'pending', 'cancelled')
+    ),
+    date_start timestamp default now() not null,
+    date_end timestamp default now(),
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
+
+create table certificates (
+    id bigint generated always as identity primary key,
+    user_id bigint references users(id) not null,
+    program_id bigint references programs(id) not null,
+    url varchar(255) unique not null,
+    issued_at timestamp default now() not null,
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
