@@ -63,7 +63,7 @@ create table users (
     teaching_group_id bigint references teaching_groups(id) not null,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null,
-    deletead_at timestamp default
+    deleted_at timestamp
 );
 
 create table enrollments (
