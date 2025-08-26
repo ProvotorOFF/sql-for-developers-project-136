@@ -136,7 +136,7 @@ create table discussions (
     id bigint generated always as identity primary key,
     user_id bigint references users(id),
     lesson_id bigint references lessons(id),
-    text text,
+    text jsonb,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
