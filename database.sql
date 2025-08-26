@@ -118,7 +118,7 @@ create table quizzes (
     id bigint generated always as identity primary key,
     lesson_id bigint references lessons(id),
     name varchar(255),
-    content text,
+    content jsonb,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
