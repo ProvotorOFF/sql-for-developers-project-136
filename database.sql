@@ -60,7 +60,7 @@ create table users (
     id bigint generated always as identity primary key,
     name varchar(255) not null,
     email varchar(255) unique not null,
-    password_hash varchar(255) not null,
+    password_hash varchar(255),
     teaching_group_id bigint references teaching_groups(id) not null,
     role varchar(20) check(role in ('student', 'teacher', 'admin')),
     created_at timestamp default now() not null,
