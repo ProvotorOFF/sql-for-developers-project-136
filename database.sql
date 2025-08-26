@@ -62,7 +62,7 @@ create table users (
     email varchar(255) unique not null,
     password_hash varchar(255),
     teaching_group_id bigint references teaching_groups(id),
-    role varchar(20) check(role in ('student', 'teacher', 'admin')),
+    role varchar(20) check(role in ('Student', 'Teacher', 'Admin')),
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null,
     deleted_at timestamp
