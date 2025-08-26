@@ -11,7 +11,7 @@ create table lessons (
     id bigint generated always as identity primary key,
     name varchar(255) not null,
     content text,
-    link varchar(255),
+    video_url varchar(255),
     position int,
     course_id bigint references courses(id),
     created_at timestamp default now() not null,
@@ -31,26 +31,26 @@ create table modules (
 create table programs (
     id bigint generated always as identity primary key,
     name varchar(255) not null,
-    cost decimal(10, 2),
-    type varchar(20),
+    price decimal(10, 2),
+    program_type varchar(20),
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
 
-create table courses_modules (
+create table course_modules (
     course_id bigint references courses(id) not null,
     module_id bigint references modules(id) not null,
     primary key (course_id, module_id)
 );
 
-create table programs_modules(
+create table program_modules (
     program_id bigint references programs(id) not null,
     module_id bigint references modules(id) not null
 );
 
 create table teaching_groups (
     id bigint generated always as identity primary key,
-    name varchar(20) check(name in ('student', 'teacher', 'admin')),
+    slug varchar(20) check(slug in ('student', 'teacher', 'admin')),
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
@@ -59,10 +59,11 @@ create table users (
     id bigint generated always as identity primary key,
     name varchar(255) not null,
     email varchar(255) unique not null,
-    password varchar(255) not null,
+    password_hash varchar(255) not null,
     teaching_group_id bigint references teaching_groups(id) not null,
     created_at timestamp default now() not null,
-    updated_at timestamp default now() not null
+    updated_at timestamp default now() not null,
+    deletead_at timestamp default
 );
 
 create table enrollments (
@@ -79,11 +80,11 @@ create table enrollments (
 create table payments (
     id bigint generated always as identity primary key,
     enrollment_id bigint references enrollments(id) not null,
-    sum decimal(10, 2) not null,
+    amount decimal(10, 2) not null,
     status varchar(30) check(
         status in ('pending', 'paid', 'failed', 'refunded')
     ),
-    payed_at timestamp default now() not null,
+    paid_at timestamp default now() not null,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
@@ -95,8 +96,8 @@ create table program_completions (
     status varchar(30) check(
         status in ('active', 'completed', 'pending', 'cancelled')
     ),
-    date_start timestamp default now() not null,
-    date_end timestamp default now(),
+    started_at timestamp default now() not null,
+    completed_at timestamp default now(),
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
@@ -131,19 +132,25 @@ create table exercises (
 
 create table discussions (
     id bigint generated always as identity primary key,
+    user_id bigint references users(id),
     lesson_id bigint references lessons(id),
-    content text,
+    text text,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
 
-create table blog (
+create table blogs (
     id bigint generated always as identity primary key,
     user_id bigint references users(id),
     name varchar(255) not null,
     content text,
     status varchar(30) check(
-        status in  ('created', 'in moderation', 'published', 'archived')
+        status in (
+            'created',
+            'in moderation',
+            'published',
+            'archived'
+        )
     ),
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
