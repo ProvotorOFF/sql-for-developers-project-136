@@ -128,3 +128,23 @@ create table exercises (
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
+
+create table discussions (
+    id bigint generated always as identity primary key,
+    lesson_id bigint references lessons(id),
+    content text,
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
+
+create table blog (
+    id bigint generated always as identity primary key,
+    user_id bigint references users(id),
+    name varchar(255) not null,
+    content text,
+    status varchar(30) check(
+        status in  ('created', 'in moderation', 'published', 'archived')
+    ),
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
