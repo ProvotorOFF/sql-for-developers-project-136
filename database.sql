@@ -110,3 +110,21 @@ create table certificates (
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
+
+create table quizzes (
+    id bigint generated always as identity primary key,
+    lesson_id bigint references lessons(id),
+    name varchar(255),
+    content text,
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
+
+create table exercises (
+    id bigint generated always as identity primary key,
+    lesson_id bigint references lessons(id),
+    name varchar(255),
+    url varchar(255) unique not null,
+    created_at timestamp default now() not null,
+    updated_at timestamp default now() not null
+);
