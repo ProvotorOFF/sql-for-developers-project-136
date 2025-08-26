@@ -50,7 +50,7 @@ create table program_modules (
 
 create table teaching_groups (
     id bigint generated always as identity primary key,
-    slug varchar(20) check(slug in ('student', 'teacher', 'admin')),
+    slug varchar(20) not null,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
@@ -61,6 +61,7 @@ create table users (
     email varchar(255) unique not null,
     password_hash varchar(255) not null,
     teaching_group_id bigint references teaching_groups(id) not null,
+    role varchar(20) check(role in ('student', 'teacher', 'admin')),
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null,
     deleted_at timestamp
